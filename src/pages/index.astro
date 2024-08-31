@@ -1,7 +1,21 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro'
+import { ProductList } from '@components/Products/ProductList'
+import Pagination from '@components/shared/Pagination.astro'
+import { actions } from 'astro:actions'
+
+const { data, error } = await actions.getProductsByPage({})
+
+if (error) {
+  console.log(error)
+}
+
+const { products, totalPages } = data!
 ---
 
 <MainLayout>
-  <h1 class='text-3xl'>Home Page</h1>
+  <h1 class='text-3xl'>Listado de Productos</h1>
+  <ProductList client:idle products={products} />
+
+  <Pagination totalPages={totalPages} />
 </MainLayout>
