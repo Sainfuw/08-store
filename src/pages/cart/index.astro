@@ -1,0 +1,125 @@
+---
+import MainLayout from '@layouts/MainLayout.astro'
+import { actions } from 'astro:actions'
+import { Formatter } from '@utils/formatter'
+
+const cartCookies = Astro.cookies.get('cart')?.value ?? '[]'
+const { data, error } = await actions.loadProductsFromCart(cartCookies)
+
+if (error || !data) {
+  return Astro.redirect('/404')
+}
+
+const total = data.reduce(
+  (total, product) => total + product.price * product.quantity,
+  0
+)
+---
+
+<MainLayout>
+  <h1 class='text-3xl font-bold mb-4'>Carrito</h1>
+  <section class='grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8'>
+    <!-- Productos -->
+    <div class='order-2 sm:order-1'>
+      <h2>Productos</h2>
+      <a href='javascript:history.back()' class='text-blue-500'>Regresar</a>
+
+      {
+        data.map((product) => (
+          <div class='flex mt-2 items-center border-2 rounded-xl px-2 py-4'>
+            <img src={product.image} alt={product.title} class='size-20' />
+            <div class='flex justify-between items-center w-full'>
+              <div>
+                <a href={`/products/${product.slug}`} class='hover:underline'>
+                  {product.title}
+                </a>
+                <p class='font-bold text-xl'>
+                  {Formatter.currency(product.price * product.quantity)}
+                  <span class='text-gray-500 text-sm font-semibold'>
+                    x{product.quantity}
+                  </span>
+                </p>
+                <p class='text-gray-500'>Talla: {product.size}</p>
+              </div>
+              <div class='pr-2'>
+                <button
+                  data-id={product.id}
+                  data-size={product.size}
+                  class='text-red-500 btn-trash'
+                >
+                  <svg
+                    class='icon icon-tabler icon-tabler-trash'
+                    width='32'
+                    height='32'
+                    viewBox='0 0 24 24'
+                    stroke-width='1.5'
+                    stroke='currentColor'
+                    fill='none'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                  >
+                    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                    <path d='M4 7l16 0' />
+                    <path d='M10 11l0 6' />
+                    <path d='M14 11l0 6' />
+                    <path d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12' />
+                    <path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3' />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Totales -->
+    <div class='bg-black h-[330px] text-white p-6 rounded-lg shadow-lg order-1'>
+      <h2 class='text-lg font-semibold mb-4'>Resumen de compra</h2>
+
+      <div class='flex justify-between text-gray-400 mb-2'>
+        <span>Envío</span>
+        <span>Gratis</span>
+      </div>
+
+      <div class='flex justify-between text-gray-400 mb-4'>
+        <span>SubTotal </span>
+        <span>{Formatter.currency(total)}</span>
+      </div>
+      <div class='flex justify-between text-gray-400 mb-4'>
+        <span>Impuesto </span>
+        <span>{Formatter.currency(total * 0.15)}</span>
+      </div>
+
+      <div class='flex justify-between text-xl font-bold'>
+        <span>Total</span>
+        <span>{Formatter.currency(total * 1.15)}</span>
+      </div>
+
+      <button
+        class='mt-10 w-full bg-blue-700 text-gray-300 py-3 rounded-lg hover:bg-gray-600 transition-all'
+      >
+        PAGAR
+      </button>
+    </div>
+  </section>
+</MainLayout>
+
+<script>
+  import { CartCookiesClient } from '@utils/cart-cookies'
+  const buttons = document.querySelectorAll(
+    '.btn-trash'
+  ) as NodeListOf<HTMLButtonElement>
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', async (e: MouseEvent) => {
+      if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement)) return
+      const id = e.currentTarget.dataset.id ?? ''
+      const size = e.currentTarget.dataset.size ?? ''
+
+      CartCookiesClient.removeItem(id, size)
+
+      window.location.reload()
+    })
+  })
+</script>

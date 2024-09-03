@@ -4,7 +4,13 @@ import { ProductList } from '@components/Products/ProductList'
 import Pagination from '@components/shared/Pagination.astro'
 import { actions } from 'astro:actions'
 
-const { data, error } = await actions.getProductsByPage({})
+const searchParams = Astro.url.searchParams
+const pageParam = Number(searchParams.get('page') ?? 1)
+
+const { data, error } = await actions.getProductsByPage({
+  page: pageParam,
+  limit: 9,
+})
 
 if (error) {
   console.log(error)
@@ -14,7 +20,7 @@ const { products, totalPages } = data!
 ---
 
 <MainLayout>
-  <h1 class='text-3xl'>Listado de Productos</h1>
+  <h1 class='text-3xl my-8 text-center'>Listado de Productos</h1>
   <ProductList client:idle products={products} />
 
   <Pagination totalPages={totalPages} />

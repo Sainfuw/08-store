@@ -1,18 +1,24 @@
 ---
+import CardCounter from '@components/Cart/CardCounter'
+
 const { isLoggedIn, isAdmin } = Astro.locals
 ---
 
-<!-- component -->
-<nav class='flex justify-between px-20 py-10 items-center bg-white'>
-  <h1 class='text-xl text-gray-800 font-bold'>AstroStore</h1>
+<nav
+  class='container max-w-4xl flex justify-between bg-black text-white py-6 items-center sticky top-0 w-full mix-blend-difference mx-auto'
+>
+  <h1 class='text-xl font-bold'>
+    <a href='/'>AstroStore</a>
+  </h1>
   <div class='flex items-center'>
     <ul class='flex items-center space-x-6'>
-      <li class='font-semibold text-gray-700'>
+      <li><CardCounter client:load /></li>
+      <li class='font-semibold'>
         <a href='/'>Home</a>
       </li>
       {
         isAdmin && (
-          <li class='font-semibold text-gray-700'>
+          <li class='font-semibold'>
             <a href='/admin/dashboard'>Admin</a>
           </li>
         )
@@ -20,11 +26,11 @@ const { isLoggedIn, isAdmin } = Astro.locals
 
       {
         isLoggedIn ? (
-          <li id='logout' class='font-semibold text-gray-700'>
+          <li id='logout' class='font-semibold'>
             <a href='#'>Salir</a>
           </li>
         ) : (
-          <li class='font-semibold text-gray-700'>
+          <li class='font-semibold'>
             <a href='/login'>Ingresar</a>
           </li>
         )

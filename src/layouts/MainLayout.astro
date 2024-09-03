@@ -5,6 +5,8 @@ import '@/styles/global.css'
 
 interface Props {
   title?: string
+  description?: string
+  image?: string
 }
 
 const { title = 'Astro Store' } = Astro.props
@@ -21,8 +23,14 @@ const { title = 'Astro Store' } = Astro.props
   <body>
     <Navbar />
 
-    <main class='container m-auto max-w-3xl px-5'>
+    <main class='container m-auto max-w-4xl px-4'>
       <slot />
     </main>
   </body>
 </html>
+
+<style>
+  html {
+    scrollbar-gutter: stable both-edges;
+  }
+</style>

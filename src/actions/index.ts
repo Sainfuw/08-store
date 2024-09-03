@@ -3,10 +3,10 @@ import { logout } from '@actions/auth/logout.action'
 import { register } from '@actions/auth/register.action'
 
 import { getProductsByPage } from '@actions/products/get-products-by-page.action'
+import { loadProductsFromCart } from './cart/load-products.action'
+import { getProductBySlug } from './products/get-product-by-slug.actions'
 
 export const server = {
-  // actions
-
   // Auth
   login,
   logout,
@@ -14,4 +14,8 @@ export const server = {
 
   // Products
   getProductsByPage,
+  getProductBySlug,
+
+  // Cart
+  loadProductsFromCart,
 }

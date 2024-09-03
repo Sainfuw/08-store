@@ -1,0 +1,52 @@
+---
+import { getFullImages } from '@utils/images'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
+interface Props {
+  images: string[]
+}
+
+const { images } = Astro.props
+
+const fullImages = getFullImages(images)
+---
+
+<div class='swiper'>
+  <div class='swiper-wrapper'>
+    {
+      fullImages.map((image) => (
+        <div class='swiper-slide'>
+          <img
+            src={image}
+            alt='Product image'
+            class='w-full h-full object-cover'
+          />
+        </div>
+      ))
+    }
+  </div>
+  <div class='swiper-pagination'></div>
+</div>
+
+<style>
+  .swiper {
+    width: 100%;
+    height: 400px;
+  }
+</style>
+
+<script>
+  import Swiper from 'swiper'
+  import { Pagination } from 'swiper/modules'
+
+  new Swiper('.swiper', {
+    loop: true,
+    pagination: {
+      el: '.swiper-pagination',
+    },
+
+    modules: [Pagination],
+  })
+</script>
