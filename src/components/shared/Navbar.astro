@@ -12,7 +12,7 @@ const { isLoggedIn, isAdmin } = Astro.locals
   </h1>
   <div class='flex items-center'>
     <ul class='flex items-center space-x-6'>
-      <li><CardCounter client:load /></li>
+      <li><CardCounter client:load transition:persist /></li>
       <li class='font-semibold'>
         <a href='/'>Home</a>
       </li>

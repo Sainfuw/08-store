@@ -106,20 +106,27 @@ const total = data.reduce(
 </MainLayout>
 
 <script>
+  import { itemsInCart } from '@store/cart.store'
   import { CartCookiesClient } from '@utils/cart-cookies'
-  const buttons = document.querySelectorAll(
-    '.btn-trash'
-  ) as NodeListOf<HTMLButtonElement>
+  import { navigate } from 'astro:transitions/client'
 
-  buttons.forEach((button) => {
-    button.addEventListener('click', async (e: MouseEvent) => {
-      if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement)) return
-      const id = e.currentTarget.dataset.id ?? ''
-      const size = e.currentTarget.dataset.size ?? ''
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll(
+      '.btn-trash'
+    ) as NodeListOf<HTMLButtonElement>
 
-      CartCookiesClient.removeItem(id, size)
+    buttons.forEach((button) => {
+      button.addEventListener('click', async (e: MouseEvent) => {
+        if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement))
+          return
+        const id = e.currentTarget.dataset.id ?? ''
+        const size = e.currentTarget.dataset.size ?? ''
 
-      window.location.reload()
+        const cart = CartCookiesClient.removeItem(id, size)
+        itemsInCart.set(cart.length)
+
+        navigate('/cart')
+      })
     })
   })
 </script>

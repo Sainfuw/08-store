@@ -91,48 +91,54 @@ const { images } = product
 <script>
   import { itemsInCart } from '@store/cart.store'
   import { CartCookiesClient } from '@utils/cart-cookies'
+  import { navigate } from 'astro:transitions/client'
 
-  const sizeElements = document.querySelectorAll('li')
-  sizeElements.forEach((element) => {
-    element.addEventListener('click', (e) => {
-      sizeElements.forEach((s) => s.classList.remove('selected-size'))
-      element.classList.add('selected-size')
+  document.addEventListener('astro:page-load', () => {
+    const sizeElements = document.querySelectorAll('li')
+
+    sizeElements.forEach((element) => {
+      element.addEventListener('click', (e) => {
+        sizeElements.forEach((s) => s.classList.remove('selected-size'))
+        element.classList.add('selected-size')
+      })
     })
-  })
 
-  const quantityInput = document.querySelector('input') as HTMLInputElement
-  const productIdInput = document.querySelector(
-    '#product-id'
-  ) as HTMLInputElement
+    const quantityInput = document.querySelector('input') as HTMLInputElement
+    const productIdInput = document.querySelector(
+      '#product-id'
+    ) as HTMLInputElement
 
-  let quantity = 1
-  const [btnDecrement, btnIncrement, btnAddToCart] =
-    document.querySelectorAll('button')
+    let quantity = 1
+    const [btnDecrement, btnIncrement, btnAddToCart] =
+      document.querySelectorAll('button')
 
-  btnIncrement.addEventListener('click', () => {
-    quantity = Math.min(quantity + 1, 5)
-    quantityInput.value = quantity.toString()
-  })
+    if (!btnDecrement || !btnIncrement) return
 
-  btnDecrement.addEventListener('click', () => {
-    quantity = Math.max(quantity - 1, 1)
-    quantityInput.value = quantity.toString()
-  })
+    btnIncrement.addEventListener('click', () => {
+      quantity = Math.min(quantity + 1, 5)
+      quantityInput.value = quantity.toString()
+    })
 
-  btnAddToCart.addEventListener('click', async () => {
-    const id = productIdInput.value
-    const size = document
-      .querySelector('.selected-size')
-      ?.getAttribute('data-size')
+    btnDecrement.addEventListener('click', () => {
+      quantity = Math.max(quantity - 1, 1)
+      quantityInput.value = quantity.toString()
+    })
 
-    if (!id) return alert('Seleciones un producto')
-    if (!size) return alert('Seleciones una Talla')
+    btnAddToCart.addEventListener('click', async () => {
+      const id = productIdInput.value
+      const size = document
+        .querySelector('.selected-size')
+        ?.getAttribute('data-size')
 
-    // btnAddToCart.disabled = true
-    const cart = CartCookiesClient.addItem({ id, size, quantity })
-    itemsInCart.set(cart.length)
+      if (!id) return alert('Seleciones un producto')
+      if (!size) return alert('Seleciones una Talla')
 
-    // TODO: cambiar luego cuando tengamos los ViewTransitions
-    // window.location.href = '/cart'
+      // btnAddToCart.disabled = true
+      const cart = CartCookiesClient.addItem({ id, size, quantity })
+      itemsInCart.set(cart.length)
+
+      // window.location.href = '/cart'
+      await navigate('/cart')
+    })
   })
 </script>

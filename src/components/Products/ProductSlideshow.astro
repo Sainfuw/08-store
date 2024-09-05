@@ -41,12 +41,14 @@ const fullImages = getFullImages(images)
   import Swiper from 'swiper'
   import { Pagination } from 'swiper/modules'
 
-  new Swiper('.swiper', {
-    loop: true,
-    pagination: {
-      el: '.swiper-pagination',
-    },
+  document.addEventListener('astro:page-load', () => {
+    new Swiper('.swiper', {
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+      },
 
-    modules: [Pagination],
+      modules: [Pagination],
+    })
   })
 </script>
