@@ -11,14 +11,16 @@ export default async function seed() {
 
   const users = [
     {
-      id: UUID(),
+      // id: UUID(),
+      id: 'ABC-123-ADMIN',
       name: 'Admin',
       email: 'admin@oops.lat',
       password: bcrypt.hashSync('admin', 10),
       role: 'admin',
     },
     {
-      id: UUID(),
+      // id: UUID(),
+      id: 'ABC-123-USER',
       name: 'User',
       email: 'user@oops.lat',
       password: bcrypt.hashSync('user', 10),
@@ -30,9 +32,10 @@ export default async function seed() {
   await db.insert(User).values(users)
 
   const queries: any = []
-  seedProducts.forEach((p) => {
+  seedProducts.forEach((p, i) => {
     const product = {
-      id: UUID(),
+      // id: UUID(),
+      id: `product-0${i + 1}`,
       ...p,
       sizes: p.sizes.join(', '),
       tags: p.tags.join(', '),

@@ -13,7 +13,7 @@ const currentPage = Math.max(pageParam > totalPages ? totalPages : pageParam, 1)
 const path = url.pathname
 ---
 
-<div class='flex justify-center gap-6 items-center my-32'>
+<div class='flex justify-center gap-6 items-center my-10'>
   <a
     href={`${path}?page=${Math.max(currentPage - 1, 1)}`}
     class='hover:opacity-70'
