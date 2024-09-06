@@ -4,6 +4,7 @@ import { register } from '@actions/auth/register.action'
 
 import { getProductsByPage } from '@actions/products/get-products-by-page.action'
 import { loadProductsFromCart } from './cart/load-products.action'
+import { createUpdateProduct } from './products/create-update.action'
 import { getProductBySlug } from './products/get-product-by-slug.actions'
 
 export const server = {
@@ -18,4 +19,8 @@ export const server = {
 
   // Cart
   loadProductsFromCart,
+
+  // Admin
+  // Product
+  createUpdateProduct,
 }

@@ -1,4 +1,5 @@
-import { defineAction, z } from 'astro:actions'
+import { defineAction } from 'astro:actions'
+import { z } from 'astro:content'
 import { count, db, eq, Product, ProductImage } from 'astro:db'
 
 export const getProductsByPage = defineAction({
@@ -31,10 +32,12 @@ export const getProductsByPage = defineAction({
 
         return {
           ...p,
-          images: images.map((i) => i.image),
+          images: images.length ? images.map((i) => i.image) : ['no-image.png'],
         }
       })
     )
+
+    // Metodo de consulta sql plana, peligrosa por el sql injection
 
     // const productsQuery = sql`
     //   SELECT a.*,

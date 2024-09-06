@@ -1,6 +1,7 @@
 import type { CartItem } from '@interfaces/cart-item'
 import { getFullImages } from '@utils/images'
-import { defineAction, z } from 'astro:actions'
+import { defineAction } from 'astro:actions'
+import { z } from 'astro:content'
 import { db, eq, inArray, Product, ProductImage } from 'astro:db'
 
 export const loadProductsFromCart = defineAction({
