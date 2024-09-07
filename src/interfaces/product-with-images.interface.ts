@@ -1,5 +1,5 @@
 export interface ProductWithImages {
-  images: string[]
+  images: any[]
   type: string
   id: string
   description: string

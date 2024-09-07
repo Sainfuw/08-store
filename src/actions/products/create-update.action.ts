@@ -1,6 +1,7 @@
+import { ImageUpload } from '@utils/image-upload'
 import { defineAction } from 'astro:actions'
 import { z } from 'astro:content'
-import { db, eq, Product } from 'astro:db'
+import { db, eq, Product, ProductImage } from 'astro:db'
 import { getSession } from 'auth-astro/server'
 import { v4 as UUID } from 'uuid'
 
@@ -34,9 +35,15 @@ export const createUpdateProduct = defineAction({
           .refine((file) => file.size <= MAX_FILE_SIZE, {
             message: 'Max image size 5mb',
           })
-          .refine((file) => ALLOWED_FILE_TYPES.includes(file.type), {
-            message: `Only images are allowed, ${ALLOWED_FILE_TYPES.join(', ')}`,
-          })
+          .refine(
+            (file) => {
+              if (file.size === 0) return true
+              return ALLOWED_FILE_TYPES.includes(file.type)
+            },
+            {
+              message: `Only images are allowed, ${ALLOWED_FILE_TYPES.join(', ')}`,
+            }
+          )
       )
       .optional(),
   }),
@@ -51,9 +58,31 @@ export const createUpdateProduct = defineAction({
     rest.slug = rest.slug.toLowerCase().replaceAll(' ', '_').trim()
     const product = { id, user: user.id, ...rest }
 
+    const queries: any = []
+
     form.id
-      ? await db.update(Product).set(product).where(eq(Product.id, id))
-      : await db.insert(Product).values(product)
+      ? queries.push(db.update(Product).set(product).where(eq(Product.id, id)))
+      : queries.push(db.insert(Product).values(product))
+
+    const urls = await Promise.all(
+      (imageFiles ?? []).map(async (file) => {
+        if (file.size === 0) return ''
+
+        return await ImageUpload.upload(file)
+      })
+    )
+
+    if (urls.at(0) !== '') {
+      queries.push(
+        db
+          .insert(ProductImage)
+          .values(
+            urls.map((url) => ({ id: UUID(), productId: id, image: url }))
+          )
+      )
+    }
+
+    await db.batch(queries)
 
     return product
   },

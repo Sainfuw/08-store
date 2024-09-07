@@ -28,147 +28,165 @@ const { product } = data
 
       <!-- Titulo -->
       <div class='mb-4'>
-        <label for='title' class='block'>Título</label>
-        <input
-          type='text'
-          id='title'
-          name='title'
-          value={product.title}
-          class='w-full p-2 border border-gray-300 rounded'
-        />
+        <label class='block'
+          >Título
+          <input
+            type='text'
+            id='title'
+            name='title'
+            value={product.title}
+            class='w-full p-2 border border-gray-300 rounded'
+          />
+        </label>
       </div>
 
       <!-- Slug -->
       <div class='mb-4'>
-        <label for='slug' class='block'>Slug</label>
-        <input
-          type='text'
-          id='slug'
-          name='slug'
-          value={product.slug}
-          class='w-full p-2 border border-gray-300 rounded'
-        />
+        <label class='block'>
+          Slug
+          <input
+            type='text'
+            id='slug'
+            name='slug'
+            value={product.slug}
+            class='w-full p-2 border border-gray-300 rounded'
+          />
+        </label>
       </div>
 
       <!-- Descripción -->
       <div class='mb-4'>
-        <label for='description' class='block'>Descripción</label>
-        <textarea
-          id='description'
-          name='description'
-          class='w-full p-2 border border-gray-300 rounded'
-          rows='8'>{product.description}</textarea
-        >
+        <label class='block'>
+          Descripción
+          <textarea
+            id='description'
+            name='description'
+            class='w-full p-2 border border-gray-300 rounded'
+            rows='8'>{product.description}</textarea
+          >
+        </label>
       </div>
 
       <div class='grid grid-cols-1 sm:grid-cols-2 gap-5'>
         <!-- Precio -->
         <div class='mb-4'>
-          <label for='price' class='block'>Precio</label>
-          <input
-            type='number'
-            id='price'
-            name='price'
-            value={product.price}
-            class='w-full p-2 border border-gray-300 rounded'
-          />
+          <label class='block'>
+            Precio
+            <input
+              type='number'
+              id='price'
+              name='price'
+              value={product.price}
+              class='w-full p-2 border border-gray-300 rounded'
+            />
+          </label>
         </div>
 
         <!-- Inventario -->
         <div class='mb-4'>
-          <label for='stock' class='block'>Inventario</label>
-          <input
-            type='number'
-            id='stock'
-            name='stock'
-            value={product.stock}
-            class='w-full p-2 border border-gray-300 rounded'
-          />
+          <label class='block'>
+            Inventario
+            <input
+              type='number'
+              id='stock'
+              name='stock'
+              value={product.stock}
+              class='w-full p-2 border border-gray-300 rounded'
+            />
+          </label>
         </div>
       </div>
 
       <!-- Labels -->
       <div class='mb-4'>
-        <label for='tags' class='block'
-          >Etiquetas <small class='text-gray-500'>(Separado por comas)</small
-          ></label
-        >
-        <input
-          type='text'
-          id='tags'
-          name='tags'
-          value={product.tags}
-          class='w-full p-2 border border-gray-300 rounded'
-        />
+        <label class='block'>
+          Etiquetas <small class='text-gray-500'>(Separado por comas)</small>
+          <input
+            type='text'
+            id='tags'
+            name='tags'
+            value={product.tags}
+            class='w-full p-2 border border-gray-300 rounded'
+          />
+        </label>
       </div>
 
       <div class='grid grid-cols-2 gap-4'>
         <!-- Gender -->
         <div class='mb-4'>
-          <label for='gender' class='block'>Sexo</label>
-          <select
-            class='w-full p-2 border border-gray-300 rounded'
-            name='gender'
-          >
-            <option value=''>[ Seleccione ]</option>
-            {
-              ['men', 'women', 'unisex', 'kid'].map((gender) => (
-                <option
-                  value={gender}
-                  class='capitalize'
-                  selected={gender === product.gender}
-                >
-                  {gender.toUpperCase()}
-                </option>
-              ))
-            }
-          </select>
+          <label class='block'>
+            Sexo
+            <select
+              class='w-full p-2 border border-gray-300 rounded'
+              name='gender'
+            >
+              <option value=''>[ Seleccione ]</option>
+              {
+                ['men', 'women', 'unisex', 'kid'].map((gender) => (
+                  <option
+                    value={gender}
+                    class='capitalize'
+                    selected={gender === product.gender}
+                  >
+                    {gender.toUpperCase()}
+                  </option>
+                ))
+              }
+            </select>
+          </label>
         </div>
 
         <!-- Type -->
         <div class='mb-4'>
-          <label for='tags' class='block'>Tipo</label>
-          <select class='w-full p-2 border border-gray-300 rounded' name='type'>
-            <option value=''>[ Seleccione ]</option>
-            {
-              ['shirts', 'shirt', 'pants', 'hats', 'hoodies'].map((type) => (
-                <option
-                  value={type}
-                  class='capitalize'
-                  selected={type === product.type}
-                >
-                  {type.toUpperCase()}
-                </option>
-              ))
-            }
-          </select>
+          <label class='block'>
+            Tipo
+            <select
+              class='w-full p-2 border border-gray-300 rounded'
+              name='type'
+            >
+              <option value=''>[ Seleccione ]</option>
+              {
+                ['shirts', 'shirt', 'pants', 'hats', 'hoodies'].map((type) => (
+                  <option
+                    value={type}
+                    class='capitalize'
+                    selected={type === product.type}
+                  >
+                    {type.toUpperCase()}
+                  </option>
+                ))
+              }
+            </select>
+          </label>
         </div>
       </div>
 
       <!-- Tallas -->
       <div class='mb-4'>
-        <label for='sizes' class='block'>Tallas</label>
-        <div class='flex'>
-          {
-            ['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
-              const sizes = product.sizes.split(',').map((s) => s.trim())
-              return (
-                <button
-                  type='button'
-                  onclick='this.classList.toggle("active")'
-                  class:list={[
-                    'btn-size',
-                    {
-                      active: sizes.includes(size),
-                    },
-                  ]}
-                >
-                  {size}
-                </button>
-              )
-            })
-          }
-        </div>
+        <label class='block'>
+          Tallas
+          <div class='flex'>
+            {
+              ['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
+                const sizes = product.sizes.split(',').map((s) => s.trim())
+                return (
+                  <button
+                    type='button'
+                    onclick='this.classList.toggle("active")'
+                    class:list={[
+                      'btn-size',
+                      {
+                        active: sizes.includes(size),
+                      },
+                    ]}
+                  >
+                    {size}
+                  </button>
+                )
+              })
+            }
+          </div>
+        </label>
       </div>
     </div>
 
@@ -226,9 +244,9 @@ const { product } = data
         </div>
 
         <!-- Slideshow -->
-        <ProductSlideshow images={product.images} />
+        <ProductSlideshow images={product.images.map((i) => i.image)} />
 
-        <table class='w-full border'>
+        <table class='w-full border mb-8'>
           <thead>
             <tr>
               <th>Imagen</th>
@@ -237,7 +255,7 @@ const { product } = data
           </thead>
           <tbody>
             {
-              product.images.map((image) => (
+              product.images.map(({ id, image }) => (
                 <tr class='border'>
                   <td class='flex justify-center'>
                     <ProductImage
@@ -247,7 +265,30 @@ const { product } = data
                     />
                   </td>
                   <td class='text-center'>
-                    <button class='btn-delete-image'>X</button>
+                    <button
+                      class='btn-delete-image text-center text-red-500'
+                      data-id={id}
+                      data-slug={product.slug}
+                    >
+                      <svg
+                        class='icon icon-tabler icon-tabler-trash ml-1'
+                        width='32'
+                        height='32'
+                        viewBox='0 0 24 24'
+                        stroke-width='1.5'
+                        stroke='currentColor'
+                        fill='none'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      >
+                        <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                        <path d='M4 7l16 0' />
+                        <path d='M10 11l0 6' />
+                        <path d='M14 11l0 6' />
+                        <path d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12' />
+                        <path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3' />
+                      </svg>
+                    </button>
                   </td>
                 </tr>
               ))
@@ -292,13 +333,29 @@ const { product } = data
       const formData = new FormData(form)
       formData.set('sizes', selectedSizes)
       // const formValues = Object.fromEntries(formData.entries())
-      // console.log(formValues)
 
       const { data, error } = await actions.createUpdateProduct(formData)
 
       if (error) return alert(error.message)
 
       navigate(`/admin/products/${data?.slug}`)
+    })
+  })
+
+  const btnDeleteImage = document.querySelectorAll('.btn-delete-image')
+
+  btnDeleteImage.forEach((btn) => {
+    btn.addEventListener('click', async (e: MouseEvent | Event) => {
+      if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement)) return
+      e.preventDefault()
+
+      const slug = e.currentTarget.dataset.slug ?? ''
+      const id = e.currentTarget.dataset.id ?? ''
+      const { data, error } = await actions.deleteProductImage(id)
+
+      if (error) return alert(error.message)
+
+      navigate(`/admin/products/${slug}`)
     })
   })
 </script>

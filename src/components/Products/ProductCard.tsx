@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function ProductCard({ product }: Props) {
-  const images = getFullImages(product.images)
+  const images = getFullImages(product.images.map((i) => i.image))
 
   const [currentImage, setCurrentImage] = useState(images[0])
 
