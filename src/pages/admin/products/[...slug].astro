@@ -320,6 +320,10 @@ const { product } = data
     // Submit form
     const form = document.querySelector('form') as HTMLFormElement
 
+    const lblSelectedFiles = document.querySelector('#lbl-selected-files')
+    const dropZone = document.querySelector('#drop-zone')
+    const fileInput = document.querySelector('#file-upload') as HTMLInputElement
+
     const sizeButtons = document.querySelectorAll('.btn-size')
 
     if (!form) return
@@ -364,11 +368,8 @@ const { product } = data
     })
 
     // Drag & Drop
-    const lblSelectedFiles = document.querySelector('#lbl-selected-files')
-    const dropZone = document.querySelector('#drop-zone')
-    const fileInput = document.querySelector('#file-upload') as HTMLInputElement
-
     const dragEvents = ['dragenter', 'dragover', 'dragleave', 'drop']
+
     dragEvents.forEach((e) => {
       dropZone?.addEventListener(e, (e) => {
         e.preventDefault()
