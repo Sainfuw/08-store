@@ -18,10 +18,10 @@ const { images } = product
 <MainLayout
   title={product.title}
   description={product.description}
-  image={images.at(0)}
+  image={images.at(0)?.image}
 >
   <div class='grid grid-cols-1 md:grid-cols-2 w-full mt-10 gap-8'>
-    <ProductSlideshow images={images} />
+    <ProductSlideshow images={images.map((i) => i.image)} />
 
     <section>
       <h2 class='text-2xl font-bold'>{product.title}</h2>

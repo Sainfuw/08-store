@@ -349,13 +349,14 @@ const { product } = data
       if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement)) return
       e.preventDefault()
 
-      const slug = e.currentTarget.dataset.slug ?? ''
+      // const slug = e.currentTarget.dataset.slug ?? ''
       const id = e.currentTarget.dataset.id ?? ''
       const { data, error } = await actions.deleteProductImage(id)
 
       if (error) return alert(error.message)
 
-      navigate(`/admin/products/${slug}`)
+      btn.parentElement?.parentElement?.remove()
+      // navigate(`/admin/products/${slug}`)
     })
   })
 </script>
