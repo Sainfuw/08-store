@@ -238,6 +238,7 @@ const { product } = data
               name='imageFiles'
               type='file'
               accept='image/*'
+              class='hidden'
               multiple
             />
           </label>
@@ -316,6 +317,7 @@ const { product } = data
   import { navigate } from 'astro:transitions/client'
 
   document.addEventListener('astro:page-load', () => {
+    // Submit form
     const form = document.querySelector('form') as HTMLFormElement
 
     const sizeButtons = document.querySelectorAll('.btn-size')
@@ -340,23 +342,75 @@ const { product } = data
 
       navigate(`/admin/products/${data?.slug}`)
     })
-  })
 
-  const btnDeleteImage = document.querySelectorAll('.btn-delete-image')
+    // Delete image
+    const btnDeleteImage = document.querySelectorAll('.btn-delete-image')
 
-  btnDeleteImage.forEach((btn) => {
-    btn.addEventListener('click', async (e: MouseEvent | Event) => {
-      if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement)) return
-      e.preventDefault()
+    btnDeleteImage.forEach((btn) => {
+      btn.addEventListener('click', async (e: MouseEvent | Event) => {
+        if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement))
+          return
+        e.preventDefault()
 
-      // const slug = e.currentTarget.dataset.slug ?? ''
-      const id = e.currentTarget.dataset.id ?? ''
-      const { data, error } = await actions.deleteProductImage(id)
+        // const slug = e.currentTarget.dataset.slug ?? ''
+        const id = e.currentTarget.dataset.id ?? ''
+        const { data, error } = await actions.deleteProductImage(id)
 
-      if (error) return alert(error.message)
+        if (error) return alert(error.message)
 
-      btn.parentElement?.parentElement?.remove()
-      // navigate(`/admin/products/${slug}`)
+        btn.parentElement?.parentElement?.remove()
+        // navigate(`/admin/products/${slug}`)
+      })
+    })
+
+    // Drag & Drop
+    const lblSelectedFiles = document.querySelector('#lbl-selected-files')
+    const dropZone = document.querySelector('#drop-zone')
+    const fileInput = document.querySelector('#file-upload') as HTMLInputElement
+
+    const dragEvents = ['dragenter', 'dragover', 'dragleave', 'drop']
+    dragEvents.forEach((e) => {
+      dropZone?.addEventListener(e, (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      })
+      document.body.addEventListener(e, (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      })
+    })
+
+    dragEvents.slice(0, 2).forEach((e) => {
+      dropZone?.addEventListener(e, (e: DragEvent | Event) => {
+        dropZone.classList.add('border-blue-500', 'bg-blue-50')
+      })
+    })
+
+    dragEvents.slice(2).forEach((e) => {
+      dropZone?.addEventListener(e, (e: DragEvent | Event) => {
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50')
+      })
+    })
+
+    dropZone?.addEventListener('drop', (e: DragEvent | Event) => {
+      const files = (e as DragEvent).dataTransfer?.files
+      if (!files) return
+
+      const validFiles = Array.from(files).filter((file) =>
+        file.type.startsWith('image/')
+      )
+      if (!validFiles.length) return
+
+      const dataTransfer = new DataTransfer()
+      validFiles.forEach((file) => {
+        dataTransfer.items.add(file)
+      })
+
+      fileInput.files = dataTransfer.files
+
+      if (lblSelectedFiles) {
+        lblSelectedFiles.innerHTML = `<strong>Selected files: ${validFiles.length}</strong>`
+      }
     })
   })
 </script>
